@@ -8,11 +8,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
-  const [name, setname] = useState();
+  const [name, setname] = useState("");
   const [show, setshow] = useState(false);
-  const [email, setemail] = useState();
-  const [confirmpassword, setconfirm] = useState();
-  const [password, setpass] = useState();
+  const [email, setemail] = useState("");
+  const [confirmpassword, setconfirm] = useState("");
+  const [password, setpass] = useState("");
   const [pic, setpic] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React from "react";
 import { VStack, Field, Input, Button, Box, Text } from "@chakra-ui/react";
-import { InputGroup } from "../../components/ui/input-group.jsx";
+import { InputGroup } from "../../components/ui/Input-group.jsx";
 import { useState } from "react";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,6 @@ import axios from "axios";
 function Login() {
   const [name, setname] = useState("");
   const [show, setshow] = useState(false);
-
   const [password, setpass] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
