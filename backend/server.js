@@ -1,6 +1,6 @@
 import express from "express";
-import { chats } from "./data/data.js";
-import { config } from "dotenv";
+// import { chats } from "./data/data.js";
+// import { config } from "dotenv";
 import { connectDB } from "./database/index.js";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
