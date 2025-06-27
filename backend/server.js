@@ -13,12 +13,12 @@ import cors from "cors";
 dotenv.config();
 connectDB();
 const app = express();
-app.use(
-  cors({
-    origin: "https://whispr-frontend-sand.vercel.app",
-    credentials: true, // If you are using cookies or auth headers
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://whispr-frontend-sand.vercel.app",
+//     credentials: true, // If you are using cookies or auth headers
+//   })
+// );
 app.use(express.json()); //to accept json data
 app.get("/", (req, res) => {
   res.send("API is running");

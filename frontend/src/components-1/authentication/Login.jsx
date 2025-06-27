@@ -32,7 +32,7 @@ function Login() {
         },
       };
       const { data } = await axios.post(
-        "https://whispr-backend.vercel.app/api/user/login",
+        "/api/user/login",
         { name, password },
         config
       );

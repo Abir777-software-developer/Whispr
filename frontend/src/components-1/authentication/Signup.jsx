@@ -85,7 +85,7 @@ function Signup() {
         },
       };
       const { data } = await axios.post(
-        "https://whispr-backend.vercel.app/api/user",
+        "/api/user",
         { name, email, password, pic },
         config
       );
