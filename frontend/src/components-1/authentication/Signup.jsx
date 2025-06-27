@@ -1,6 +1,6 @@
 import React from "react";
 import { VStack, Field, Input, Button, Box, Text } from "@chakra-ui/react";
-import { InputGroup } from "../../components/ui/input-group.jsx";
+import { InputGroup } from "../../components/ui/Input-group.jsx";
 import { useState } from "react";
 //import { colorPalettes } from "compositions/lib/color-palettes";
 import { toaster } from "../../components/ui/toaster.jsx";
