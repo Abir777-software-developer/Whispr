@@ -8,6 +8,14 @@ import { notFound, errorHandler } from "./middleware/errorniddleware.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import { Server } from "socket.io";
+import cors from "cors";
+
+app.use(
+  cors({
+    origin: "https://whispr-frontend-sand.vercel.app",
+    credentials: true, // If you are using cookies or auth headers
+  })
+);
 dotenv.config();
 connectDB();
 const app = express();
