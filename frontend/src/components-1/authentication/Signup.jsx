@@ -102,7 +102,8 @@ function Signup() {
 
       setLoading(false);
       // history.push('/chats')
-      navigate("/chats");
+      // navigate("/chats");
+      navigate("/chat");
     } catch (error) {
       toaster.create({
         title: "Error occured",
