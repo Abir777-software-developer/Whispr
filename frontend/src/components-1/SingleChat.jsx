@@ -115,7 +115,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
         setnewmessage("");
 
         const { data } = await axios.post(
-          "/api/message",
+          "https://whispr-backend-rr1w.onrender.com/api/message",
           {
             content: newmessage,
             chatId: selectedChat._id,
