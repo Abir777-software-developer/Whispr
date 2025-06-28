@@ -9,11 +9,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 function Chatpage() {
   const { user } = ChatState();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [fetchagain, setfetchagain] = useState(false);
-  useEffect(() => {
-    if (!user) navigate("/");
-  }, [user, navigate]);
+  // useEffect(() => {
+  //   if (!user) navigate("/");
+  // }, [user, navigate]);
   return (
     <div style={{ width: "100%" }}>
       {user && <SideDrawer />}
