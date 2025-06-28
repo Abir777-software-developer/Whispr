@@ -13,7 +13,8 @@ function Login() {
   const navigate = useNavigate();
   const handleClick = () => setshow(!show);
 
-  const submitHandler = async () => {
+  const submitHandler = async (e) => {
+    e.preventDefault();
     setLoading(true);
     if (!name || !password) {
       toaster.create({

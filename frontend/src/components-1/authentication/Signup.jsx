@@ -56,7 +56,8 @@ function Signup() {
       return;
     }
   };
-  const submitHandler = async () => {
+  const submitHandler = async (e) => {
+    e.preventDefault();
     setLoading(true);
     if (!name || !email || !password || !confirmpassword) {
       toaster.create({
