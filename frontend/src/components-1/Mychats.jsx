@@ -21,7 +21,10 @@ function Mychats({ fetchagain }) {
         },
       };
 
-      const { data } = await axios.get("/api/chats", config);
+      const { data } = await axios.get(
+        "https://whispr-backend-rr1w.onrender.com/api/user/login/api/chat",
+        config
+      );
       // console.log(data);
 
       setChats(data);

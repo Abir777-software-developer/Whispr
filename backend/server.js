@@ -47,7 +47,7 @@ const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
     // origin: "http://localhost:5173",
-    origin: "https://whispr-frontend-tkm3.onrender.com/",
+    origin: "https://whispr-frontend-tkm3.onrender.com",
   },
 });
 io.on("connection", (socket) => {
