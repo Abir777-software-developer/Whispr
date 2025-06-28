@@ -47,7 +47,7 @@ function Login() {
       setLoading(false);
       // history.push('/chats')
       // navigate("/chats");
-      navigate("/chat");
+      navigate("/chats");
     } catch (error) {
       toaster.create({
         title: "Error occured",
