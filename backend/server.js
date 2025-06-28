@@ -13,12 +13,7 @@ import cors from "cors";
 dotenv.config();
 connectDB();
 const app = express();
-// app.use(
-//   cors({
-//     origin: "https://whispr-frontend-sand.vercel.app",
-//     credentials: true, // If you are using cookies or auth headers
-//   })
-// );
+
 app.use(express.json()); //to accept json data
 app.get("/", (req, res) => {
   res.send("API is running");
@@ -46,7 +41,7 @@ const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
     // origin: "http://localhost:5173",
-    origin: "https://whispr-frontend-tkm3.onrender.com",
+    origin: "https://whispr-frontend-tkm3.onrender.com/",
   },
 });
 io.on("connection", (socket) => {
