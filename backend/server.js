@@ -34,7 +34,7 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(5000, console.log(`server started on port ${PORT}`));
+const server = app.listen(PORT, console.log(`server started on port ${PORT}`));
 // const io = require("socket.io")(server, {
 //   pingTimeout: 60000,
 //   cors: {
@@ -45,7 +45,8 @@ const server = app.listen(5000, console.log(`server started on port ${PORT}`));
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:5173",
+    // origin: "http://localhost:5173",
+    origin: "https://whispr-frontend-tkm3.onrender.com",
   },
 });
 io.on("connection", (socket) => {
