@@ -86,7 +86,7 @@ function Signup() {
         },
       };
       const { data } = await axios.post(
-        "/api/user",
+        "https://whispr-backend-rr1w.onrender.com/api/user",
         { name, email, password, pic },
         config
       );
