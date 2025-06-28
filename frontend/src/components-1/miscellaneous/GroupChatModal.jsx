@@ -69,7 +69,7 @@ function GroupChatModal({ children }) {
         },
       };
       const { data } = await axios.post(
-        "/api/chat/group",
+        "https://whispr-backend-rr1w.onrender.com/api/chat/group",
         {
           name: groupChatName,
           users: JSON.stringify(selectedUsers.map((u) => u._id)),

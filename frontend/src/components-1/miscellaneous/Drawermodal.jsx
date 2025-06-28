@@ -43,7 +43,10 @@ function Drawermodal({ user, children }) {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(
+        `https://whispr-backend-rr1w.onrender.com/api/user?search=${search}`,
+        config
+      );
       setloading(false);
       setsearches(data);
     } catch (error) {

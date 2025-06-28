@@ -16,7 +16,7 @@ import Lottie from "react-lottie";
 import animationData from "../animations/ani.json";
 
 // const ENDPOINT = "http://localhost:5000";
-const ENDPOINT = "https://whispr-frontend-tkm3.onrender.com/";
+const ENDPOINT = "https://whispr-backend-rr1w.onrender.com";
 
 var socket, selectedChatcompare;
 function SingleChat({ fetchagain, setfetchagain }) {
