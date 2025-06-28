@@ -118,7 +118,7 @@ function Signup() {
     <form>
       <VStack gap="4">
         <Field.Root orientation="horizontal" id="namefield">
-          <Field.Label>Name</Field.Label>
+          <Field.Label htmlFor="signup-name">Name</Field.Label>
           {/* <Text fontsize="md" fontweight="bold">
             Name
           </Text> */}
@@ -131,7 +131,7 @@ function Signup() {
           />
         </Field.Root>
         <Field.Root orientation="horizontal" id="emailfield">
-          <Field.Label>Email</Field.Label>
+          <Field.Label htmlFor="emaill">Email</Field.Label>
           {/* <Text fontsize="md" fontweight="bold">
             Name
           </Text> */}
@@ -144,7 +144,7 @@ function Signup() {
           />
         </Field.Root>
         <Field.Root orientation="horizontal" id="passwordfield">
-          <Field.Label>Password</Field.Label>
+          <Field.Label htmlFor="signup-password">Password</Field.Label>
           {/* <Text fontsize="md" fontweight="bold">
             Name
           </Text> */}
@@ -172,7 +172,7 @@ function Signup() {
           </InputGroup>
         </Field.Root>
         <Field.Root orientation="horizontal" id="confirmpasswordfield">
-          <Field.Label>Confirm Password</Field.Label>
+          <Field.Label htmlFor="cpassword">Confirm Password</Field.Label>
           {/* <Text fontsize="md" fontweight="bold">
             Name
           </Text> */}
@@ -200,7 +200,7 @@ function Signup() {
           </InputGroup>
         </Field.Root>
         <Field.Root orientation="horizontal" id="picfield">
-          <Field.Label>Upload your Picture</Field.Label>
+          <Field.Label htmlFor="pict">Upload your Picture</Field.Label>
           {/* <Text fontsize="md" fontweight="bold">
             Name
           </Text> */}

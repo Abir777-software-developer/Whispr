@@ -63,7 +63,7 @@ function Login() {
     <form>
       <VStack gap="4">
         <Field.Root orientation="horizontal" id="loginnamefield">
-          <Field.Label>Name</Field.Label>
+          <Field.Label htmlFor="login-name">Name</Field.Label>
           {/* <Text fontsize="md" fontweight="bold">
               Name
             </Text> */}
@@ -77,7 +77,7 @@ function Login() {
         </Field.Root>
 
         <Field.Root orientation="horizontal" id="loginpasswordfield">
-          <Field.Label>Password</Field.Label>
+          <Field.Label htmlFor="login-password">Password</Field.Label>
           {/* <Text fontsize="md" fontweight="bold">
               Name
             </Text> */}
