@@ -13,6 +13,12 @@ import cors from "cors";
 dotenv.config();
 connectDB();
 const app = express();
+app.use(
+  cors({
+    origin: "https://whispr-frontend-tkm3.onrender.com",
+    credentials: true,
+  })
+);
 
 app.use(express.json()); //to accept json data
 app.get("/", (req, res) => {
