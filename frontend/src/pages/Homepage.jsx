@@ -13,7 +13,7 @@ function Homepage() {
     const user = JSON.parse(localStorage.getItem("userInfo"));
 
     if (user) {
-      navigate("/chats");
+      navigate("/chat");
     }
   }, [navigate]);
   return (

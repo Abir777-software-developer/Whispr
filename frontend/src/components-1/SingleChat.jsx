@@ -15,7 +15,9 @@ import { io } from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../animations/ani.json";
 
-const ENDPOINT = "http://localhost:5000";
+// const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://whispr-backend-rr1w.onrender.com";
+
 var socket, selectedChatcompare;
 function SingleChat({ fetchagain, setfetchagain }) {
   const { user, selectedChat, setSelectedChat, notification, setnotification } =
