@@ -62,21 +62,21 @@ function Login() {
   return (
     <form>
       <VStack gap="4">
-        <Field.Root orientation="horizontal" id="namefield">
+        <Field.Root orientation="horizontal" id="loginnamefield">
           <Field.Label>Name</Field.Label>
           {/* <Text fontsize="md" fontweight="bold">
               Name
             </Text> */}
           <Input
-            // id="login-name"
-            id="namefield"
+            id="login-name"
+            // id="namefield"
             placeholder="Enter your name"
             value={name}
             onChange={(e) => setname(e.target.value)}
           />
         </Field.Root>
 
-        <Field.Root orientation="horizontal" id="passwordfield">
+        <Field.Root orientation="horizontal" id="loginpasswordfield">
           <Field.Label>Password</Field.Label>
           {/* <Text fontsize="md" fontweight="bold">
               Name
@@ -95,8 +95,8 @@ function Login() {
             }
           >
             <Input
-              // id="login-password"
-              id="passwordfield"
+              id="login-password"
+              // id="passwordfield"
               type={show ? "text" : "password"}
               placeholder="Enter your password"
               value={password}
