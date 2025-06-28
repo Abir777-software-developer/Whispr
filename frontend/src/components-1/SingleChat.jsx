@@ -50,7 +50,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
       setloading(true);
 
       const { data } = await axios.get(
-        `https://whispr-backend-rr1w.onrender.com/api/user/login/api/message/${selectedChat._id}`,
+        `https://whispr-backend-rr1w.onrender.com/api/message/${selectedChat._id}`,
         config
       );
       // console.log(messages);
