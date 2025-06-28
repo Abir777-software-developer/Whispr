@@ -68,7 +68,8 @@ function Login() {
               Name
             </Text> */}
           <Input
-            id="login-name"
+            // id="login-name"
+            id="namefield"
             placeholder="Enter your name"
             value={name}
             onChange={(e) => setname(e.target.value)}
@@ -94,7 +95,8 @@ function Login() {
             }
           >
             <Input
-              id="login-password"
+              // id="login-password"
+              id="passwordfield"
               type={show ? "text" : "password"}
               placeholder="Enter your password"
               value={password}

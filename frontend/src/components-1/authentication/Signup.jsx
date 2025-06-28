@@ -123,7 +123,8 @@ function Signup() {
             Name
           </Text> */}
           <Input
-            id="signup-name"
+            //id="signup-name"
+            id="namefield"
             placeholder="Enter your name"
             value={name}
             onChange={(e) => setname(e.target.value)}
@@ -135,7 +136,8 @@ function Signup() {
             Name
           </Text> */}
           <Input
-            id="emaill"
+            // id="emaill"
+            id="emailfield"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setemail(e.target.value)}
@@ -160,7 +162,8 @@ function Signup() {
             }
           >
             <Input
-              id="signup-password"
+              // id="signup-password"
+              id="passwordfield"
               type={show ? "text" : "password"}
               placeholder="Enter your password"
               value={password}
@@ -187,7 +190,8 @@ function Signup() {
             }
           >
             <Input
-              id="cpassword"
+              // id="cpassword"
+              id="confirmpasswordfield"
               type={show ? "text" : "password"}
               placeholder="Confirm password"
               value={confirmpassword}
@@ -201,7 +205,8 @@ function Signup() {
             Name
           </Text> */}
           <Input
-            id="pict"
+            // id="pict"
+            id="picfield"
             colorPalette="blue"
             type="file"
             p={1.5}
