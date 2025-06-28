@@ -24,6 +24,7 @@ function Chatpage() {
         height="91.5vh"
         padding="10px"
       >
+        {console.log("user from chats", user)}
         {user && <Mychats fetchagain={fetchagain} />}
         {user && (
           <ChatBox fetchagain={fetchagain} setfetchagain={setfetchagain} />
