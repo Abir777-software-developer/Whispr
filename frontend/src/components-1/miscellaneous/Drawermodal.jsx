@@ -68,7 +68,11 @@ function Drawermodal({ user, children }) {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post("/api/chat", { userId }, config);
+      const { data } = await axios.post(
+        "https://whispr-backend-rr1w.onrender.com/api/chat",
+        { userId },
+        config
+      );
       if (!Chats.find((c) => c._id === data._id)) setChats([data, ...Chats]);
       setSelectedChat(data);
       setloadchat(false);

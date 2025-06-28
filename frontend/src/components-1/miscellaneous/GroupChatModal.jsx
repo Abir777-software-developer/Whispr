@@ -40,7 +40,10 @@ function GroupChatModal({ children }) {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(
+        `https://whispr-backend-rr1w.onrender.com/api/user?search=${search}`,
+        config
+      );
       //   console.log(data);
       setLoading(false);
       setSearchResult(data);
