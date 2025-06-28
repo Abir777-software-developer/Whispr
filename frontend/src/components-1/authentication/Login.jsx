@@ -44,6 +44,8 @@ function Login() {
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
 
+      console.log("User Info Set:", localStorage.getItem("userInfo"));
+
       setLoading(false);
       // history.push('/chats')
       // navigate("/chats");
