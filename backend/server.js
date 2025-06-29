@@ -53,8 +53,11 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("connected to socket.io");
 
+  let currentUserId = null;
+
   socket.on("setup", (userData) => {
-    socket.join(userData._id);
+    currentUserId = userData._id;
+    socket.join(currentUserId);
     // console.log(userData._id);
 
     socket.emit("connected");
@@ -82,8 +85,15 @@ io.on("connection", (socket) => {
       socket.in(user._id).emit("message received", newmessagereceived);
     });
   });
-  socket.off("setup", () => {
-    console.log("user disconnected");
-    socket.leave(userData._id);
+  // socket.off("setup", () => {
+  //   console.log("user disconnected");
+  //   socket.leave(userData._id);
+  // });
+  socket.on("disconnect", (reason) => {
+    console.log("User disconnected:", socket.id, "Reason:", reason);
+    if (currentUserId) {
+      socket.leave(currentUserId);
+      console.log("User left room:", currentUserId);
+    }
   });
 });

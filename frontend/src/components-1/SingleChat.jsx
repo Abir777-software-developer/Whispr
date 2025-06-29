@@ -74,6 +74,13 @@ function SingleChat({ fetchagain, setfetchagain }) {
     socket.on("connected", () => setsocketConnected(true));
     socket.on("typing", () => setistyping(true));
     socket.on("stop typing", () => setistyping(false));
+
+    return () => {
+      socket.off("connected");
+      socket.off("typing");
+      socket.off("stop typing");
+      socket.disconnect();
+    };
   }, []);
   useEffect(() => {
     fetchMessages();
