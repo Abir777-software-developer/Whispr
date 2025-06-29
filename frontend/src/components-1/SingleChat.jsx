@@ -14,7 +14,6 @@ import ScrollableChat from "./ScrollableChat.jsx";
 import { io } from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../animations/ani.json";
-import { useRef } from "react";
 
 // const ENDPOINT = "http://localhost:5000";
 const ENDPOINT = "https://whispr-backend-rr1w.onrender.com";
@@ -29,7 +28,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
   const [socketConnected, setsocketConnected] = useState(false);
   const [typing, settyping] = useState(false);
   const [istyping, setistyping] = useState(false);
-  const selectedchatcompareref = useRef();
+  // const selectedchatcompareref = useRef();
   const defaultOptions = {
     loop: true,
     autoplay: true,

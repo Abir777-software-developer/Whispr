@@ -16,15 +16,15 @@ export const sendMessage = expressAsyncHandler(async (req, res) => {
   var newMessage = {
     sender: req.user._id,
     content: content,
-    Chat: chatId,
+    chat: chatId,
   };
   try {
     var message = await Message.create(newMessage);
 
     message = await message.populate("sender", "name pic");
-    message = await message.populate("Chat");
+    message = await message.populate("chat");
     message = await User.populate(message, {
-      path: "Chat.users",
+      path: "chat.users",
       select: "name pic email",
     });
     // message = await message.populate({
@@ -49,7 +49,7 @@ export const allMessage = expressAsyncHandler(async (req, res) => {
   try {
     const messages = await Message.find({ Chat: req.params.chatId })
       .populate("sender", "name pic email")
-      .populate("Chat");
+      .populate("chat");
 
     res.json(messages);
   } catch (error) {
