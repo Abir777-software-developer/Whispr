@@ -86,8 +86,8 @@ function SingleChat({ fetchagain, setfetchagain }) {
 
   useEffect(() => {
     fetchMessages();
-    // selectedChatcompare = selectedChat;
-    selectedchatcompareref = selectedChat;
+    selectedChatcompare = selectedChat;
+    //selectedchatcompareref = selectedChat;
   }, [selectedChat]);
 
   // console.log(notification, "-------");
@@ -96,7 +96,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
   //receiving the message
   useEffect(() => {
     socket.on("message received", (newmessagereceived) => {
-      const selectedChatcompare = selectedchatcompareref.current;
+      // const selectedChatcompare = selectedchatcompareref.current;
       if (
         !selectedChatcompare ||
         selectedChatcompare._id !== newmessagereceived.Chat._id
@@ -114,7 +114,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
     return () => {
       socket.off("message received");
     };
-  }, [notification, fetchagain]);
+  });
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newmessage) {
