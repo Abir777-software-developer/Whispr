@@ -76,9 +76,16 @@ io.on("connection", (socket) => {
   });
 
   socket.on("new message", (newmessagereceived) => {
-    var chat = newmessagereceived.chat;
-    if (!chat.users) return console.log("chat.users not defined");
+    var chat = newmessagereceived.chat || newmessagereceived.Chat;
+    //if (!chat.users) return console.log("chat.users not defined");
 
+    if (!chat?.users || !newmessagereceived?.sender) {
+      console.log(
+        "Invalid message received:",
+        JSON.stringify(newmessagereceived, null, 2)
+      );
+      return;
+    }
     chat.users.forEach((user) => {
       if (user._id == newmessagereceived.sender._id) return;
 

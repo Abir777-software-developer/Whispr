@@ -4,9 +4,7 @@ import React from "react";
 import SideDrawer from "../components-1/miscellaneous/SideDrawer.jsx";
 import Mychats from "../components-1/Mychats.jsx";
 import ChatBox from "../components-1/ChatBox.jsx";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useEffect } from "react";
 function Chatpage() {
   const { user } = ChatState();
   // const navigate = useNavigate();
@@ -24,7 +22,7 @@ function Chatpage() {
         height="91.5vh"
         padding="10px"
       >
-        {console.log("user from chats", user)}
+        {/* {console.log("user from chats", user)} */}
         {user && <Mychats fetchagain={fetchagain} />}
         {user && (
           <ChatBox fetchagain={fetchagain} setfetchagain={setfetchagain} />
