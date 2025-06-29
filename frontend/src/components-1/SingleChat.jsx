@@ -14,6 +14,7 @@ import ScrollableChat from "./ScrollableChat.jsx";
 import { io } from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../animations/ani.json";
+import { useRef } from "react";
 
 // const ENDPOINT = "http://localhost:5000";
 const ENDPOINT = "https://whispr-backend-rr1w.onrender.com";
@@ -28,7 +29,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
   const [socketConnected, setsocketConnected] = useState(false);
   const [typing, settyping] = useState(false);
   const [istyping, setistyping] = useState(false);
-
+  const selectedchatcompareref = useRef();
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -82,9 +83,11 @@ function SingleChat({ fetchagain, setfetchagain }) {
       socket.disconnect();
     };
   }, []);
+
   useEffect(() => {
     fetchMessages();
-    selectedChatcompare = selectedChat;
+    // selectedChatcompare = selectedChat;
+    selectedchatcompareref = selectedChat;
   }, [selectedChat]);
 
   // console.log(notification, "-------");
@@ -93,6 +96,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
   //receiving the message
   useEffect(() => {
     socket.on("message received", (newmessagereceived) => {
+      const selectedChatcompare = selectedchatcompareref.current;
       if (
         !selectedChatcompare ||
         selectedChatcompare._id !== newmessagereceived.Chat._id
@@ -106,7 +110,11 @@ function SingleChat({ fetchagain, setfetchagain }) {
         setmessages([...messages, newmessagereceived]);
       }
     });
-  });
+
+    return () => {
+      socket.off("message received");
+    };
+  }, [notification, fetchagain]);
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newmessage) {
