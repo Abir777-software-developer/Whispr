@@ -23,17 +23,17 @@ export const sendMessage = expressAsyncHandler(async (req, res) => {
 
     message = await message.populate("sender", "name pic");
     message = await message.populate("Chat");
-    // message = await User.populate(message, {
-    //   path: "Chat.users",
-    //   select: "name pic email",
-    // });
-    message = await message.populate({
-      path: "Chat",
-      populate: {
-        path: "users",
-        select: "name pic email",
-      },
+    message = await User.populate(message, {
+      path: "Chat.users",
+      select: "name pic email",
     });
+    // message = await message.populate({
+    //   path: "Chat",
+    //   populate: {
+    //     path: "users",
+    //     select: "name pic email",
+    //   },
+    // });
 
     await Chat.findByIdAndUpdate(req.body.chatId, {
       latestMessage: message,
