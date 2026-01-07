@@ -112,7 +112,7 @@ export const renameGroup = expressAsyncHandler(async (req, res) => {
       new: true,
     }
   )
-    .populate("users", "password")
+    .populate("users", "-password")
     .populate("groupAdmin", "-password");
 
   if (!updatedChat) {
