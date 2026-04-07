@@ -1,6 +1,6 @@
 import { Text, Box, Button, Field, Input, VStack } from "@chakra-ui/react";
 import { ChatState } from "../Context/ChatProvider.jsx";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { getSender, getSenderFull } from "../config/Chatlogic.jsx";
@@ -11,24 +11,28 @@ import axios from "axios";
 import { toaster } from ".././components/ui/toaster.jsx";
 import "./Styles.css";
 import ScrollableChat from "./ScrollableChat.jsx";
-import { io } from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../animations/ani.json";
 
 // const ENDPOINT = "http://localhost:5000";
 const ENDPOINT = "https://whispr-backend-rr1w.onrender.com";
-
-var socket, selectedChatcompare;
 function SingleChat({ fetchagain, setfetchagain }) {
-  const { user, selectedChat, setSelectedChat, notification, setnotification } =
-    ChatState() || {};
+  const {
+    user,
+    selectedChat,
+    setSelectedChat,
+    notification,
+    setnotification,
+    socket,
+    socketConnected,
+  } = ChatState() || {};
   const [messages, setmessages] = useState([]);
   const [loading, setloading] = useState(false);
   const [newmessage, setnewmessage] = useState("");
-  const [socketConnected, setsocketConnected] = useState(false);
   const [typing, settyping] = useState(false);
   const [istyping, setistyping] = useState(false);
-  // const selectedchatcompareref = useRef();
+
+  const selectedChatCompareRef = useRef();
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -69,24 +73,19 @@ function SingleChat({ fetchagain, setfetchagain }) {
   };
 
   useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user);
-    socket.on("connected", () => setsocketConnected(true));
+    if (!socket) return;
     socket.on("typing", () => setistyping(true));
     socket.on("stop typing", () => setistyping(false));
 
     return () => {
-      socket.off("connected");
       socket.off("typing");
       socket.off("stop typing");
-      socket.disconnect();
     };
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     fetchMessages();
-    selectedChatcompare = selectedChat;
-    //selectedchatcompareref = selectedChat;
+    selectedChatCompareRef.current = selectedChat;
   }, [selectedChat]);
 
   // console.log(notification, "-------");
@@ -94,26 +93,29 @@ function SingleChat({ fetchagain, setfetchagain }) {
 
   //receiving the message
   useEffect(() => {
+    if (!socket) return;
     socket.on("message received", (newmessagereceived) => {
-      // const selectedChatcompare = selectedchatcompareref.current;
       if (
-        !selectedChatcompare ||
-        selectedChatcompare._id !== newmessagereceived.Chat._id
+        !selectedChatCompareRef.current ||
+        selectedChatCompareRef.current._id !== newmessagereceived.Chat?._id
       ) {
-        //give notifications
-        if (!notification.includes(newmessagereceived)) {
-          setnotification([newmessagereceived, ...notification]);
-          setfetchagain(!fetchagain);
-        }
+        // Handle notifications and sidebar refresh if the message is from a different chat
+        setnotification((prev) => {
+          if (!prev.find((n) => n._id === newmessagereceived._id)) {
+            return [newmessagereceived, ...prev];
+          }
+          return prev;
+        });
+        setfetchagain((prev) => !prev);
       } else {
-        setmessages([...messages, newmessagereceived]);
+        setmessages((prev) => [...prev, newmessagereceived]);
       }
     });
 
     return () => {
       socket.off("message received");
     };
-  });
+  }, [socket]); // Only run once or when socket changes
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newmessage) {
@@ -139,7 +141,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
         // console.log(data);
 
         socket.emit("new message", data);
-        setmessages([...messages, data]);
+        setmessages((prev) => [...prev, data]);
       } catch (error) {
         toaster.create({
           title: "Error occured",

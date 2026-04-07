@@ -1,5 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
+
+const ENDPOINT = "https://whispr-backend-rr1w.onrender.com";
+var socket; // Socket as a provider-level singleton
 const ChatContext = createContext();
 
 const ChatProvider = ({ children }) => {
@@ -7,19 +11,30 @@ const ChatProvider = ({ children }) => {
   const [selectedChat, setSelectedChat] = useState();
   const [Chats, setChats] = useState([]);
   const [notification, setnotification] = useState([]);
+  const [socketConnected, setSocketConnected] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log(userInfo);
-
     if (!userInfo) {
-      //!userinfo
       navigate("/");
     } else {
       setUser(userInfo);
     }
   }, [navigate]);
+
+  useEffect(() => {
+    if (user) {
+      socket = io(ENDPOINT);
+      socket.emit("setup", user);
+      socket.on("connected", () => setSocketConnected(true));
+
+      return () => {
+        socket.disconnect();
+        setSocketConnected(false);
+      };
+    }
+  }, [user]);
   //}, [navigate]);
   return (
     <ChatContext.Provider
@@ -32,6 +47,8 @@ const ChatProvider = ({ children }) => {
         setChats,
         notification,
         setnotification,
+        socket,
+        socketConnected,
       }}
     >
       {children}

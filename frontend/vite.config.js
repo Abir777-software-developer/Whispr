@@ -6,8 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // "/api": "http://localhost:5000",
-      "/api": "https://whispr-backend-rr1w.onrender.com",
+      "/api": {
+        target: "https://whispr-backend-rr1w.onrender.com",
+        changeOrigin: true,
+        secure: false,
+      }
     },
   },
 });
