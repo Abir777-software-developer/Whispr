@@ -13,9 +13,15 @@ import cors from "cors";
 dotenv.config();
 connectDB();
 const app = express();
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://whispr-frontend-tkm3.onrender.com"
+];
+
 app.use(
   cors({
-    origin: "https://whispr-frontend-tkm3.onrender.com",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
@@ -46,8 +52,7 @@ const server = app.listen(PORT, console.log(`server started on port ${PORT}`));
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    // origin: "http://localhost:5173",
-    origin: "https://whispr-frontend-tkm3.onrender.com",
+    origin: allowedOrigins,
   },
 });
 io.on("connection", (socket) => {
