@@ -52,10 +52,13 @@ function Drawermodal({ user, children }) {
     } catch (error) {
       toaster.create({
         title: "Error Occured!!",
-        description: "failed to load the search results",
+        description: error.response?.status === 429 
+          ? error.response.data.message 
+          : "failed to load the search results",
         type: "warning",
         duration: 5000,
       });
+      setloading(false);
     }
   };
 

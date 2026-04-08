@@ -13,9 +13,11 @@ import "./Styles.css";
 import ScrollableChat from "./ScrollableChat.jsx";
 import Lottie from "react-lottie";
 import animationData from "../animations/ani.json";
+import CatchMeUpModal from "./miscellaneous/CatchMeUpModal.jsx";
+import { LuSparkles } from "react-icons/lu";
 
-// const ENDPOINT = "http://localhost:5000";
-const ENDPOINT = "https://whispr-backend-rr1w.onrender.com";
+const ENDPOINT = "http://localhost:5000";
+// const ENDPOINT = "https://whispr-backend-rr1w.onrender.com";
 function SingleChat({ fetchagain, setfetchagain }) {
   const {
     user,
@@ -31,6 +33,13 @@ function SingleChat({ fetchagain, setfetchagain }) {
   const [newmessage, setnewmessage] = useState("");
   const [typing, settyping] = useState(false);
   const [istyping, setistyping] = useState(false);
+
+  // Catch Me Up States
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const [summary, setSummary] = useState("");
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [missedCount, setMissedCount] = useState(0);
+  const [lastSeenTime, setLastSeenTime] = useState(null);
 
   const selectedChatCompareRef = useRef();
   const defaultOptions = {
@@ -51,10 +60,11 @@ function SingleChat({ fetchagain, setfetchagain }) {
           Authorization: `Bearer ${user.token}`,
         },
       };
+      setmessages([]); // 1. Clear old messages immediately to avoid state leakage
       setloading(true);
 
       const { data } = await axios.get(
-        `https://whispr-backend-rr1w.onrender.com/api/message/${selectedChat._id}`,
+        `${ENDPOINT}/api/message/${selectedChat._id}`,
         config
       );
       // console.log(messages);
@@ -84,9 +94,103 @@ function SingleChat({ fetchagain, setfetchagain }) {
   }, [socket]);
 
   useEffect(() => {
+    // 1. Before switching to a new chat, save the lastSeen time for the CURRENT chat
+    if (selectedChatCompareRef.current) {
+      localStorage.setItem(
+        `whispr_lastSeen_${selectedChatCompareRef.current._id}_${user._id}`,
+        new Date().toISOString()
+      );
+    }
+
+    // 2. Load lastSeen time for the NEW chat and fetch messages
+    const storedLastSeen = localStorage.getItem(
+      `whispr_lastSeen_${selectedChat?._id}_${user._id}`
+    );
+    setLastSeenTime(storedLastSeen);
+    setMissedCount(0); // Reset count
+
     fetchMessages();
     selectedChatCompareRef.current = selectedChat;
-  }, [selectedChat]);
+
+    return () => {
+      if (selectedChatCompareRef.current) {
+        localStorage.setItem(
+          `whispr_lastSeen_${selectedChatCompareRef.current._id}_${user._id}`,
+          new Date().toISOString()
+        );
+      }
+    };
+  }, [selectedChat, user._id]);
+
+
+  // Handle missed message count calculation
+  useEffect(() => {
+    // 2. Only calculate if there are messages AND they belong to the current selectedChat
+    if (messages.length > 0 && lastSeenTime && selectedChat) {
+      const messagesBelongToChat = messages.every(m => m.Chat?._id === selectedChat._id || m.Chat === selectedChat._id);
+      
+      if (messagesBelongToChat) {
+        const lastSeenDate = new Date(lastSeenTime);
+        const missed = messages.filter(
+          (m) => new Date(m.createdAt) > lastSeenDate && m.sender._id !== user._id
+        );
+        setMissedCount(missed.length);
+      } else {
+        setMissedCount(0); // If messages don't match, don't show the banner
+      }
+    } else {
+      setMissedCount(0);
+    }
+  }, [messages, lastSeenTime, user._id, selectedChat]);
+
+  const handleSummarize = async () => {
+    if (!lastSeenTime || !selectedChat) return;
+
+    try {
+      setIsSummaryOpen(true);
+      setSummaryLoading(true);
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        `${ENDPOINT}/api/message/summarize`,
+        {
+          chatId: selectedChat._id,
+          since: lastSeenTime,
+        },
+        config
+      );
+
+      setSummary(data.summary);
+      setSummaryLoading(false);
+
+      // Update lastSeen so the banner disappears after summarizing
+      const now = new Date().toISOString();
+      localStorage.setItem(`whispr_lastSeen_${selectedChat._id}_${user._id}`, now);
+      setMissedCount(0);
+    } catch (error) {
+      let errorMessage = "Summarizer model is waking up, try few times later";
+      
+      // If it's a rate limit error (429), use the backend's specific message
+      if (error.response?.status === 429) {
+        errorMessage = error.response.data.message;
+      }
+
+      toaster.create({
+        title: "AI Summarization Status",
+        description: errorMessage,
+        type: "error",
+      });
+      setIsSummaryOpen(false);
+      setSummaryLoading(false);
+    }
+
+  };
 
   // console.log(notification, "-------");
   // console.log(typeof notification);
@@ -131,7 +235,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
         setnewmessage("");
 
         const { data } = await axios.post(
-          "https://whispr-backend-rr1w.onrender.com/api/message",
+          `${ENDPOINT}/api/message`,
           {
             content: newmessage,
             chatId: selectedChat._id,
@@ -234,9 +338,42 @@ function SingleChat({ fetchagain, setfetchagain }) {
               />
             ) : (
               <div className="messages">
+                {missedCount > 0 && (
+                  <Box
+                    bg="rgba(108, 99, 255, 0.1)"
+                    border="1px solid rgba(108, 99, 255, 0.3)"
+                    borderRadius="lg"
+                    p={2}
+                    mb={4}
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Text fontSize="sm" color="#4a44cc" fontWeight="bold">
+                      🔔 You missed {missedCount} messages
+                    </Text>
+                    <Button
+                      size="xs"
+                      bg="#6c63ff"
+                      color="white"
+                      _hover={{ bg: "#5a52e0" }}
+                      onClick={handleSummarize}
+                    >
+                      <LuSparkles style={{ marginRight: "4px" }} />
+                      Catch me up
+                    </Button>
+                  </Box>
+                )}
                 <ScrollableChat messages={messages} />
               </div>
             )}
+
+            <CatchMeUpModal
+              isOpen={isSummaryOpen}
+              onClose={() => setIsSummaryOpen(false)}
+              summary={summary}
+              loading={summaryLoading}
+            />
 
             <form onSubmit={(e) => e.preventDefault()}>
               <VStack gap="4">

@@ -53,8 +53,10 @@ function Login() {
     } catch (error) {
       toaster.create({
         title: "Error occured",
-        description: error.response?.data?.message || "something went wrong",
-        type: "info",
+        description: error.response?.status === 429 
+          ? error.response.data.message 
+          : (error.response?.data?.message || "something went wrong"),
+        type: "error",
         duration: 5000,
       });
       console.log(error);
