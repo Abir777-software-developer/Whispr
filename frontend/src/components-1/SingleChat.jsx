@@ -16,8 +16,8 @@ import animationData from "../animations/ani.json";
 import CatchMeUpModal from "./miscellaneous/CatchMeUpModal.jsx";
 import { LuSparkles } from "react-icons/lu";
 
-const ENDPOINT = "http://localhost:5000";
-// const ENDPOINT = "https://whispr-backend-rr1w.onrender.com";
+
+const ENDPOINT = "https://whispr-backend-rr1w.onrender.com";
 function SingleChat({ fetchagain, setfetchagain }) {
   const {
     user,
@@ -128,7 +128,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
     // 2. Only calculate if there are messages AND they belong to the current selectedChat
     if (messages.length > 0 && lastSeenTime && selectedChat) {
       const messagesBelongToChat = messages.every(m => m.Chat?._id === selectedChat._id || m.Chat === selectedChat._id);
-      
+
       if (messagesBelongToChat) {
         const lastSeenDate = new Date(lastSeenTime);
         const missed = messages.filter(
@@ -175,7 +175,7 @@ function SingleChat({ fetchagain, setfetchagain }) {
       setMissedCount(0);
     } catch (error) {
       let errorMessage = "Summarizer model is waking up, try few times later";
-      
+
       // If it's a rate limit error (429), use the backend's specific message
       if (error.response?.status === 429) {
         errorMessage = error.response.data.message;
